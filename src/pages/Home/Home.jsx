@@ -4,10 +4,11 @@ import Navbar from '../../Shared/Navbar/Navbar';
 import LeftSideBar from '../../Layout/leftSideBar/LeftSideBar';
 import RightSideBar from '../../Layout/RightSideBar/RightSideBar';
 import LatestNews from '../LatestNews/LatestNews';
+import { Outlet } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className='max-w-5xl mx-auto'>
+        <div className='max-w-6xl mx-auto'>
             <Header></Header>
             <LatestNews></LatestNews>
             <Navbar></Navbar>
@@ -16,7 +17,7 @@ const Home = () => {
                     <LeftSideBar></LeftSideBar>
                 </div>
                 <div className='border border-blue-500 col-span-2'>
-                    <h1>This section will container mid align of home page</h1>
+                    <Outlet></Outlet>
                 </div>
                 <div className='border border-blue-500'>
                     <RightSideBar></RightSideBar>
