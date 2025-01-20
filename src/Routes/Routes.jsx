@@ -6,6 +6,9 @@ import Career from "../pages/Career/Career";
 import Login from "../pages/Login/Login";
 import MidHome from "../pages/Home/MidHome/MidHome";
 import DynamicHome from "../pages/Home/DynamicHome/DynamicHome";
+import NewDetails from "../pages/NewsDetails/NewDetails";
+import Register from "../pages/Register/Register";
+import PrivateRoute from "./privateRouter/PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +31,11 @@ const router = createBrowserRouter([
                 ]
             },
             {
+                path:'/:id',
+                loader:({params})=>fetch(`https://authentication-project-one.vercel.app/news/${params.id}`),
+                element:<PrivateRoute><NewDetails></NewDetails></PrivateRoute>
+            },
+            {
                 path:'/about',
                 element:<About></About>
             },
@@ -38,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path:'/login',
                 element:<Login></Login>
+            },
+            {
+                path:'/register',
+                element:<Register></Register>
             }
         ]
     }

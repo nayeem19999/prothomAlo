@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import userProfile from '../../assets/userProfile.png'
+import { authContext } from '../../Providers/AuthProvider/AuthProvider';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Navbar = () => {
     const location = useLocation()
-    console.log(location)
+    // console.log(location)
+    const {user,logout} = useContext(authContext)
+
+    const handleLogout=()=>{
+        logout()
+        .then(()=>{
+            toast('logout done')
+        })
+        .catch(err=>console.log(err.message))
+    }
     
 
     const navLink = <>
@@ -13,7 +24,7 @@ const Navbar = () => {
         <li><NavLink to='/career'>Career</NavLink></li>
     </>
     return (
-        <div className={`${location.pathname === '/login' ? 'my-0':'my-10'}`}>
+        <div className={`${(location.pathname === '/login' || location.pathname === '/register') ? 'my-0':'my-10'}`}>
             <div className="navbar bg-base-100">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -39,17 +50,26 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="menu menu-horizontal px-1 flex items-center">
                         {navLink}
                     </ul>
                 </div>
                 <div className="navbar-end">
                     <div className='flex gap-2'>
-                        <img className='h-12' src={userProfile} alt="" />
-                        <Link to='/login'><button className="btn btn-neutral px-9">Login</button></Link>
+                        {
+                            user?<div className='flex gap-3'>
+                                <img className='h-12 w-12 rounded-full' src={user.photoURL} alt="" />
+                                <button className="btn btn-neutral px-9" onClick={handleLogout}>logout</button>
+                            </div>:<div className='flex gap-3'>
+                            <img className='h-12' src={userProfile} alt="" />
+                            <Link to='/login'><button className="btn btn-neutral px-9">Login</button></Link>
+                            </div>
+                        }
+                        
                     </div>
                 </div>
             </div>
+            <ToastContainer></ToastContainer>
         </div>
     );
 };

@@ -34,7 +34,7 @@ const MidHome = () => {
                             <div>
                                 <p className='font-bold mx-5 mt-3'>{news.title}</p>
                                 <img src={news.image_url} alt="" />
-                                <div className='mx-3 my-3'>{(news.details).slice(0,300)}...<span className='text-red-600'><Link to={location.pathname = `/news/${news._id}`? `/news/${news._id}`: `/news/${news.category_id}/news/${news._id}`}>Read More</Link></span></div>
+                                <div className='mx-3 my-3'>{(news.details).slice(0,300)}...<span className='text-red-600'><Link to={`/${news._id}`}>Read More</Link></span></div>
                             </div>
                         </div>
                     </div>)

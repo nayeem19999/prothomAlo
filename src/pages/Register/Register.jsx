@@ -2,19 +2,32 @@ import React, { useContext } from 'react';
 import Navbar from '../../Shared/Navbar/Navbar';
 import { Link } from 'react-router-dom';
 import { authContext } from '../../Providers/AuthProvider/AuthProvider';
+import { updateProfile } from 'firebase/auth';
 import { ToastContainer, toast } from 'react-toastify';
 
-const Login = () => {
-    const {login} = useContext(authContext)
-    const handleSubmit=e=>{
+
+const Register = () => {
+    const {createUser} = useContext(authContext)
+    const handleSubmit =e=>{
         e.preventDefault()
         const form = new FormData(e.currentTarget)
+        const name = form.get("name")
+        const image = form.get("photoUrl")
         const email = form.get("email")
         const password = form.get("password")
-        login(email,password)
+        console.log(name,image,email,password)
+        createUser(email,password)
         .then(result=>{
-        
             console.log(result.user)
+            updateProfile(result.user,{
+                displayName:name,
+                photoURL:image
+            })
+            .then(()=>{
+                console.log('user updated')
+                toast("Registration Done!!!!!!!")
+            })
+            .catch(err=>console.log(err.message))
         })
         .catch(err=>console.log(err.message))
     }
@@ -22,14 +35,26 @@ const Login = () => {
         <div>
             <Navbar></Navbar>
             <div>
-                <div className="hero ">
+                <div className="hero">
                     <div className="hero-content flex-col">
                         <div className="text-center">
-                            <h1 className="text-5xl font-bold">Login now!</h1>
+                            <h1 className="text-5xl font-bold">Register Now!</h1>
                             
                         </div>
                         <div className="md:w-[700px] bg-base-100 border shadow-2xl p-10">
                             <form className="card-body" onSubmit={handleSubmit}>
+                                <div className="form-control"> 
+                                    <label className="label">
+                                        <span className="label-text">Name</span>
+                                    </label>
+                                    <input type="text" placeholder="Name" className="input input-bordered" name='name' required />
+                                </div>
+                                <div className="form-control"> 
+                                    <label className="label">
+                                        <span className="label-text">Image</span>
+                                    </label>
+                                    <input type="text" placeholder="Image link" name='photoUrl' className="input input-bordered" required />
+                                </div>
                                 <div className="form-control"> 
                                     <label className="label">
                                         <span className="label-text">Email</span>
@@ -46,9 +71,9 @@ const Login = () => {
                                     </label>
                                 </div>
                                 <div className="form-control mt-6">
-                                    <button className="btn btn-neutral">Login</button>
+                                    <button className="btn btn-neutral">Register</button>
                                 </div>
-                                <p className='text-center mt-3'>New To this website? please <Link to='/register'><span className='text-blue-700'>Register</span></Link></p>
+                                <p className='text-center mt-3'>Already have an account? please <Link to='/login'><span className='text-blue-700'>Login</span></Link></p>
                             </form>
                         </div>
                     </div>
@@ -59,4 +84,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
